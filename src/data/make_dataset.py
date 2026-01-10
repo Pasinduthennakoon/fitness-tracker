@@ -66,12 +66,59 @@ df_acc[df_acc['set'] == 1]
 # --------------------------------------------------------------
 # Working with datetimes
 # --------------------------------------------------------------
+df_acc.info()
+
+pd.to_datetime(data['epoch (ms)'], unit="ms")
+
+df_acc.index = pd.to_datetime(df_acc['epoch (ms)'], unit="ms")
+df_gyr.index = pd.to_datetime(df_gyr['epoch (ms)'], unit="ms")
+
+df_acc.drop(columns=['epoch (ms)', 'time (01:00)', 'elapsed (s)'], inplace=True)
+df_gyr.drop(columns=['epoch (ms)', 'time (01:00)', 'elapsed (s)'], inplace=True)
 
 
 # --------------------------------------------------------------
 # Turn into function
 # --------------------------------------------------------------
+def read_data_from_files(files):
+    df_acc = pd.DataFrame()
+    df_gyr = pd.DataFrame()
 
+    acc_set = 1
+    gyr_set = 1
+
+    for f in files:
+        participant = f.split("-")[0].replace(data_path, "")
+        label = f.split("-")[1]
+        category = f.split("-")[2].rstrip("123").rstrip("_MetaWear_2019")
+        
+        data = pd.read_csv(f)
+        
+        data['participant'] = participant
+        data['label'] = label
+        data['category'] = category
+        
+        if "Accelerometer" in f:
+            data['set'] = acc_set
+            acc_set+=1
+            df_acc = pd.concat([df_acc, data])
+            
+        if "Gyroscope" in f:
+            data['set'] = gyr_set
+            gyr_set+=1
+            df_gyr = pd.concat([df_gyr, data])
+            
+    df_acc[df_acc['set'] == 1]
+    
+    df_acc.index = pd.to_datetime(df_acc['epoch (ms)'], unit="ms")
+    df_gyr.index = pd.to_datetime(df_gyr['epoch (ms)'], unit="ms")
+
+    df_acc.drop(columns=['epoch (ms)', 'time (01:00)', 'elapsed (s)'], inplace=True)
+    df_gyr.drop(columns=['epoch (ms)', 'time (01:00)', 'elapsed (s)'], inplace=True)
+
+    return df_acc, df_gyr
+
+df_acc, df_gyr = read_data_from_files(files)
 
 # --------------------------------------------------------------
 # Merging datasets
