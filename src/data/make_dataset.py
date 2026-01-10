@@ -21,17 +21,47 @@ f = files[0]
 
 participant = f.split("-")[0].replace(data_path, "")
 label = f.split("-")[1]
-category = f.split("-")[2].rstrip("123")
+category = f.split("-")[2].rstrip("123").rstrip("_MetaWear_2019")
 
 data = pd.read_csv(f)
 
 data['participant'] = participant
 data['label'] = label
 data['category'] = category
+
 # --------------------------------------------------------------
 # Read all files
 # --------------------------------------------------------------
+df_acc = pd.DataFrame()
+df_gyr = pd.DataFrame()
 
+acc_set = 1
+gyr_set = 1
+
+for f in files:
+    participant = f.split("-")[0].replace(data_path, "")
+    label = f.split("-")[1]
+    category = f.split("-")[2].rstrip("123").rstrip("_MetaWear_2019")
+    
+    data = pd.read_csv(f)
+    
+    data['participant'] = participant
+    data['label'] = label
+    data['category'] = category
+    
+    if "Accelerometer" in f:
+        data['set'] = acc_set
+        acc_set+=1
+        df_acc = pd.concat([df_acc, data])
+        
+    if "Gyroscope" in f:
+        data['set'] = gyr_set
+        gyr_set+=1
+        df_gyr = pd.concat([df_gyr, data])
+        
+df_acc[df_acc['set'] == 1]
+        
+    
 
 # --------------------------------------------------------------
 # Working with datetimes
