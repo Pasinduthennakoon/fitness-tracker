@@ -1,3 +1,4 @@
+from operator import le
 import pandas as pd
 from glob import glob
 
@@ -166,6 +167,8 @@ data_resampled = pd.concat([df.resample(rule="200ms").apply(sampling).dropna() f
 
 data_resampled['set'] = data_resampled['set'].astype("int")
 data_resampled.info()
+
+
 # --------------------------------------------------------------
 # Export dataset
 # --------------------------------------------------------------
