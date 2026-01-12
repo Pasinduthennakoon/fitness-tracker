@@ -209,7 +209,8 @@ __marimo__/
 # VS Code
 *.code-workspace
 
-/data/raw/
-/reports/figures/
+/data/raw/MetaMotion/
+/data/raw/*.zip
+/reports/figures/*.png
 
 
