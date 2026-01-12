@@ -210,5 +210,6 @@ __marimo__/
 *.code-workspace
 
 /data/raw/
+/reports/figures/
 
 
