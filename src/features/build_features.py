@@ -66,6 +66,10 @@ ax[1].plot(subset["acc_y_lowpass"].reset_index(drop=True), label="butterworth fi
 ax[0].legend(loc="upper center", bbox_to_anchor=(0.5, 1.15), fancybox=True, shadow=True)
 ax[1].legend(loc="upper center", bbox_to_anchor=(0.5, 1.15), fancybox=True, shadow=True)
 
+for col in predictor_column:
+    df_lowpass = LowPass.low_pass_filter(df_lowpass, col, fs, cutoff, order=5)
+    df_lowpass[col] = df_lowpass[col + "_lowpass"]
+    del df_lowpass[col + "_lowpass"]
 
 # --------------------------------------------------------------
 # Principal component analysis PCA
