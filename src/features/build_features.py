@@ -95,6 +95,19 @@ subset[["pca_1", "pca_2", "pca_3"]].plot()
 # Sum of squares attributes
 # --------------------------------------------------------------
 
+df_squared = df_pca.copy()
+
+acc_r = df_squared["acc_x"] **2 + df_squared["acc_y"] **2 + df_squared["acc_z"] **2
+gyr_r = df_squared["gyr_x"] **2 + df_squared["gyr_y"] **2 + df_squared["gyr_z"] **2
+
+df_squared["acc_r"] = np.sqrt(acc_r)
+df_squared["gyr_r"] = np.sqrt(gyr_r)
+
+subset = df_squared[df_squared["set"] == 14]
+
+subset[["acc_r", "gyr_r"]].plot(subplots=True)
+
+df_squared
 
 # --------------------------------------------------------------
 # Temporal abstraction
