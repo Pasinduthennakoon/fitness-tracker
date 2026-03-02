@@ -34,12 +34,13 @@ duration = df[df["set"] == 1].index[-1] - df[df["set"] == 1].index[0]
 duration.seconds
 
 for s in df["set"].unique():
-    start = df[df["set"] == 1].index[0]
-    stop = df[df["set"] == 1].index[-1]
+    start = df[df["set"] == s].index[0]
+    stop = df[df["set"] == s].index[-1]
     
     duration = stop - start
     df.loc[(df["set"] == s), "duration"] = duration.seconds
 
+duration_df = df.groupby(["category"])["duration"].mean()
     
 # --------------------------------------------------------------
 # Butterworth lowpass filter
